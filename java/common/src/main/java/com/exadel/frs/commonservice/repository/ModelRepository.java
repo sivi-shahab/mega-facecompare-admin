@@ -14,16 +14,22 @@
  * permissions and limitations under the License.
  */
 
-package com.exadel.frs.repository;
+package com.exadel.frs.commonservice.repository;
 
 import com.exadel.frs.commonservice.entity.Model;
 import com.exadel.frs.commonservice.entity.ModelFaceProjection;
 import java.util.List;
 import java.util.Optional;
+
+import com.exadel.frs.commonservice.enums.ModelType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
+    Optional<Model> findByApiKeyAndType(String apiKey, ModelType type);
 
     @Query("select distinct m " +
             "from Model m " +
