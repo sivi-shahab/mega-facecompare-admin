@@ -4,5 +4,4 @@
 !java/pom.xml
 !java/common/
 !java/admin/
-!java/api/pom.xml
 **/target

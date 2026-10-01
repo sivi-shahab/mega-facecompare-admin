@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.7
 #
 # compreface-admin — Spring Boot (modul java/admin + java/common), non-root.
-# Build context: root repo  (docker build -f services/compreface-admin/Dockerfile .)
-# Ignore file  : services/compreface-admin/Dockerfile.dockerignore (BuildKit)
+# Build context: root repo ini  (docker build -t mega/compreface-admin:<versi> .  — atau scripts/build.sh)
+# Ignore file  : .dockerignore
 #
 # Catatan: APPERY_API_KEY (telemetry upstream ke api.appery.io) sengaja TIDAK di-bake.
 
@@ -16,7 +16,6 @@ WORKDIR /workspace/compreface
 COPY java/pom.xml ./
 COPY java/common/pom.xml common/
 COPY java/admin/pom.xml admin/
-COPY java/api/pom.xml api/
 RUN --mount=type=cache,target=/root/.m2 \
     mvn -B -q -pl admin -am dependency:go-offline -Dmaven.gitcommitid.skip || true
 COPY java/common common

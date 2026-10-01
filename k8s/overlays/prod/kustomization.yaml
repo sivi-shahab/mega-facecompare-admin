@@ -1,0 +1,19 @@
+# Overlay PROD — hanya compreface-admin. Namespace compreface (dibuat oleh mega-facecompare-deploy).
+# Ganti "registry.example.internal" dengan host registry internal; untuk rilis, sebaiknya pin digest
+# (newTag → digest: sha256:...) dari build/digests.txt hasil scripts/push.sh.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: compreface
+
+resources:
+  - ../../base
+  - pdb.yaml
+
+images:
+  - name: mega/compreface-admin
+    newName: registry.example.internal/mega/compreface-admin
+    newTag: "1.2.0"
+
+replicas:
+  - name: compreface-admin
+    count: 2
