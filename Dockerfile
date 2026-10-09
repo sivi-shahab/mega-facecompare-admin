@@ -77,6 +77,6 @@ ENV NO_PROXY=localhost,127.0.0.1,.bankmega.com
 # Define user
 USER appuser
 
-EXPOSE 8080
+EXPOSE 8080 8081
 
 ENTRYPOINT ["sh", "-c", "exec java $ADMIN_JAVA_OPTS -jar /app/app.jar"]
