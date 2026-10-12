@@ -2,6 +2,7 @@
 !LICENSE
 !NOTICE
 !java/pom.xml
+!java/maven-settings.xml
 !java/common/
 !java/admin/
 **/target
