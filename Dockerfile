@@ -16,25 +16,39 @@ WORKDIR /workspace/compreface
 # Layer dependency: hanya pom → cache Maven tetap valid selama pom tidak berubah.
 # Copy dependency files
 COPY java/pom.xml ./
+COPY java/maven-settings.xml /root/.m2/settings.xml
 COPY java/common/pom.xml common/
 COPY java/admin/pom.xml admin/
 
-RUN --mount=type=cache,target=/root/.m2 \
-    mvn -B -q -pl admin -am dependency:go-offline -Dmaven.gitcommitid.skip || true
+RUN --mount=type=cache,target=/root/.m2/repository \
+    mvn -B -q -pl admin -am dependency:go-offline \
+    -Dmaven.gitcommitid.skip
 
 COPY java/common common
 COPY java/admin admin
 
-RUN --mount=type=cache,target=/root/.m2 \
+RUN --mount=type=cache,target=/root/.m2/repository \
     mvn -B -pl admin -am package \
-      -Dmaven.test.skip=true -Dmaven.site.skip=true -Dmaven.javadoc.skip=true \
-      -Dcheckstyle.skip -Djacoco.skip -Dmaven.gitcommitid.skip \
+    -Dmaven.test.skip=true \
+    -Dmaven.site.skip=true \
+    -Dmaven.javadoc.skip=true \
+    -Dcheckstyle.skip \
+    -Djacoco.skip \
+    -Dmaven.gitcommitid.skip \
  && cp admin/target/frs-crud-app-*.jar /workspace/app.jar
+
 
 # ==========================================
 # Stage Final App
 # ==========================================
 FROM imageregistry.bankmegadev.com:5000/eclipse/eclipse-temurin:17.0.8_7-jre-focal AS base
+
+ENV http_proxy=http://10.190.21.24:3128
+ENV https_proxy=http://10.190.21.24:3128
+ENV no_proxy=localhost,127.0.0.1,.bankmega.com
+ENV HTTP_PROXY=http://10.190.21.24:3128
+ENV HTTPS_PROXY=http://10.190.21.24:3128
+ENV NO_PROXY=localhost,127.0.0.1,.bankmega.com
 
 # Default non-rahasia; override lewat env / ConfigMap.
 ENV ADMIN_JAVA_OPTS="-XX:MaxRAMPercentage=75.0" 
