@@ -67,6 +67,7 @@ public class Model {
     private String name;
     private String guid;
     @Column(name = "api_key")
+    @ToString.Exclude // audit NV-07: keep API keys out of logs
     private String apiKey;
     @Convert(converter = ModelTypeConverter.class)
     private ModelType type;
