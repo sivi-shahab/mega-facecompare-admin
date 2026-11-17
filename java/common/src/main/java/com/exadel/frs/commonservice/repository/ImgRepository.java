@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +25,22 @@ public interface ImgRepository extends PagingAndSortingRepository<Img, UUID> {
     @Modifying
     @Query("delete from Img where id in (select distinct(i.id) from Img i join Embedding e on e.img.id = i.id where e.subject.apiKey = :apiKey)")
     void deleteBySubjectApiKey(@Param("apiKey") String apiKey);
+
+    /*
+     * Security fix (audit MFC-07 / MFC-08): the two bulk deletes above find images through embeddings, so they
+     * delete nothing when the embeddings were removed first (which the FK order forces). Callers must instead
+     * collect the image ids BEFORE deleting embeddings and then remove the images that are no longer referenced.
+     */
+
+    @Query("select distinct e.img.id from Embedding e where e.subject.id = :subjectId and e.img is not null")
+    List<UUID> findImgIdsBySubjectId(@Param("subjectId") UUID subjectId);
+
+    @Query("select distinct e.img.id from Embedding e where e.subject.apiKey = :apiKey and e.img is not null")
+    List<UUID> findImgIdsBySubjectApiKey(@Param("apiKey") String apiKey);
+
+    @Modifying
+    @Query("delete from Img i where i.id in :ids and not exists (select e.id from Embedding e where e.img.id = i.id)")
+    int deleteUnreferencedByIds(@Param("ids") Collection<UUID> ids);
 
     @Query("select i from Img i join Embedding e on e.img.id = i.id where e.id = :embeddingId and e.subject.apiKey = :apiKey")
     Optional<Img> getImgByEmbeddingId(@Param("apiKey") String apiKey, @Param("embeddingId") UUID embeddingId);

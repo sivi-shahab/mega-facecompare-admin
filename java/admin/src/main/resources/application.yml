@@ -71,7 +71,7 @@ spring:
     port: 587
     test-connection: false
     properties.mail:
-      debug: true
+      debug: false # audit hardening: never print SMTP sessions (reset/registration links) to logs
       smtp:
         connectiontimeout: 12000
         writetimeout: 12000
