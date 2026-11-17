@@ -1,0 +1,20 @@
+databaseChangeLog:
+  # Security fix (audit MFC-07 / MFC-08): before this release, deleting a subject, model or application left the
+  # enrolled face photos in the img table (only embedding.img_id references img, so DB cascades never reached it).
+  # The code paths are fixed; this one-time changeset purges images that are no longer referenced by any embedding.
+  - changeSet:
+      id: purge-orphan-face-images
+      author: mega-security-audit
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            schemaName: public
+            tableName: img
+        - tableExists:
+            schemaName: public
+            tableName: embedding
+      changes:
+        - sql:
+            sql: >-
+              DELETE FROM public.img i
+              WHERE NOT EXISTS (SELECT 1 FROM public.embedding e WHERE e.img_id = i.id)

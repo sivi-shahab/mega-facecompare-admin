@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -29,9 +30,11 @@ public class ChangePasswordDto {
 
     @NotEmpty(message = "User's password is incorrect")
     @Size(min = 8, max = 255, message = "User's password is incorrect")
+    @ToString.Exclude // audit MFC-02
     private String oldPassword;
 
     @NotEmpty(message = "User's new password is incorrect")
     @Size(min = 8, max = 255, message = "User's new password is incorrect")
+    @ToString.Exclude // audit MFC-02
     private String newPassword;
 }

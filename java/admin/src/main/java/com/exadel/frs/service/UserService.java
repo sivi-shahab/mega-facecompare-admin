@@ -52,6 +52,9 @@ import liquibase.repackaged.org.apache.commons.text.StringSubstitutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import com.exadel.frs.system.security.UserTokenRevoker;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -70,6 +73,12 @@ public class UserService {
     private final EmailSender emailSender;
     private final Environment env;
     private final AuthorizationManager authManager;
+
+    // audit MFC-01: optional + lazy so unit tests that build UserService with mocks keep working
+    // and no circular dependency with the OAuth2 configuration is introduced.
+    @Autowired(required = false)
+    @Lazy
+    private UserTokenRevoker userTokenRevoker;
 
     public User getUser(final Long id) {
         return userRepository.findById(id)
@@ -94,7 +103,7 @@ public class UserService {
     @Transactional
     @CollectStatistics(type = USER_CREATE)
     public User createUser(final UserCreateDto userCreateDto) {
-        log.info("Create new user with userCreateDto: {}", userCreateDto);
+        log.info("Create new user requested"); // audit MFC-02: never log the DTO (contains the password)
         val isMailServerEnabled = Boolean.valueOf(env.getProperty("spring.mail.enable"));
 
         validateUserCreateDto(userCreateDto);
@@ -179,6 +188,7 @@ public class UserService {
     public void deleteUser(final UserDeleteDto userDeleteDto) {
         manageOwnedAppsByUserBeingDeleted(userDeleteDto);
         userRepository.deleteByGuid(userDeleteDto.getUserToDelete().getGuid());
+        revokeTokens(userDeleteDto.getUserToDelete()); // audit hardening: end sessions of deleted users
     }
 
     public List<User> autocomplete(final String query) {
@@ -230,7 +240,7 @@ public class UserService {
 
     @CollectStatistics(type = USER_CREATE)
     public User updateDemoUser(UserCreateDto userCreateDto) {
-        log.info("Demo user update with userCreateDto: {}", userCreateDto);
+        log.info("Demo user update requested"); // audit MFC-02: never log the DTO (contains the password)
         val isMailServerEnabled = Boolean.valueOf(env.getProperty("spring.mail.enable"));
 
         validateUserCreateDto(userCreateDto);
@@ -335,11 +345,19 @@ public class UserService {
         user.setPassword(encodedNewPwd);
 
         userRepository.save(user);
+        revokeTokens(user);
     }
 
     @Transactional
     public void resetPassword(final User user, final String password) {
         user.setPassword(encoder.encode(password));
         userRepository.save(user);
+        revokeTokens(user);
+    }
+
+    private void revokeTokens(final User user) {
+        if (userTokenRevoker != null) {
+            userTokenRevoker.revokeAllTokens(user.getEmail());
+        }
     }
 }
