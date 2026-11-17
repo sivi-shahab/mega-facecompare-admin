@@ -12,6 +12,8 @@ ARG JRE_IMAGE=eclipse-temurin:17.0.8_7-jre-focal@sha256:fec0b0f6cb7d2c41c0381c68
 ### STAGE 1: build ###
 FROM ${MAVEN_IMAGE} AS build
 WORKDIR /workspace/compreface
+# Opsional: opsi JVM untuk Maven di dalam build (mis. proxy: -Dhttps.proxyHost=... -Dhttps.proxyPort=...). Kosong = default.
+ARG MAVEN_OPTS=""
 # Layer dependency: hanya pom → cache Maven tetap valid selama pom tidak berubah.
 COPY java/pom.xml ./
 COPY java/common/pom.xml common/
