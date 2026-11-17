@@ -53,6 +53,10 @@ public class AppService {
     private final UserService userService;
     private final AuthorizationManager authManager;
 
+    // audit MFC-07: optional so unit tests that construct the service with mocks keep working
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    private ModelImageCleaner modelImageCleaner;
+
     public App getApp(final String appGuid) {
         return appRepository.findByGuid(appGuid)
                             .orElseThrow(() -> new AppNotFoundException(appGuid));
@@ -256,6 +260,14 @@ public class AppService {
 
         authManager.verifyWritePrivilegesToApp(user, app, true);
 
+        val imageIds = modelImageCleaner != null
+                ? modelImageCleaner.collectImageIds(app.getModels().stream()
+                        .map(com.exadel.frs.commonservice.entity.Model::getApiKey)
+                        .collect(java.util.stream.Collectors.toList()))
+                : java.util.List.<java.util.UUID>of();
         appRepository.deleteById(app.getId());
+        if (modelImageCleaner != null) {
+            modelImageCleaner.deleteUnreferenced(imageIds);
+        }
     }
 }

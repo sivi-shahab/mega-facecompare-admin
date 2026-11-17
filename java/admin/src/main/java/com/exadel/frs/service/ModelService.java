@@ -73,6 +73,10 @@ public class ModelService {
     private final ImgRepository imgRepository;
     private final ModelStatisticRepository statisticRepository;
 
+    // audit MFC-07: optional so unit tests that construct the service with mocks keep working
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    private ModelImageCleaner modelImageCleaner;
+
     public Model getModel(final String modelGuid) {
         return modelRepository.findByGuid(modelGuid)
                               .orElseThrow(() -> new ModelNotFoundException(modelGuid, ""));
@@ -299,7 +303,13 @@ public class ModelService {
 
         authManager.verifyWritePrivilegesToApp(user, model.getApp());
 
+        val imageIds = modelImageCleaner != null
+                ? modelImageCleaner.collectImageIds(java.util.List.of(model.getApiKey()))
+                : java.util.List.<java.util.UUID>of();
         modelRepository.deleteById(model.getId());
+        if (modelImageCleaner != null) {
+            modelImageCleaner.deleteUnreferenced(imageIds);
+        }
     }
 
     public List<ModelStatisticProjection> getSummarizedByDayModelStatistics(final String appGuid, final String guid, final Long userId) {

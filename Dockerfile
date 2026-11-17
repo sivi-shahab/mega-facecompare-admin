@@ -13,6 +13,8 @@ ENV NO_PROXY=localhost,127.0.0.1,.bankmega.com
 
 WORKDIR /workspace/compreface
 
+# Opsional: opsi JVM untuk Maven di dalam build (mis. proxy: -Dhttps.proxyHost=... -Dhttps.proxyPort=...). Kosong = default.
+ARG MAVEN_OPTS=""
 # Layer dependency: hanya pom → cache Maven tetap valid selama pom tidak berubah.
 # Copy dependency files
 COPY java/pom.xml ./

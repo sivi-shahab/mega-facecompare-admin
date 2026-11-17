@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder
@@ -40,6 +41,7 @@ public class UserCreateDto {
     @Size(min = 1, max = 50, message = "User's last name size must be between 1 and 50")
     private String lastName;
 
+    @ToString.Exclude // audit MFC-02: never render the password in toString/logs
     private String password;
 
     @JsonProperty(defaultValue = "true")
