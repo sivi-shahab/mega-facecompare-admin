@@ -42,7 +42,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(schema = "public")
+@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

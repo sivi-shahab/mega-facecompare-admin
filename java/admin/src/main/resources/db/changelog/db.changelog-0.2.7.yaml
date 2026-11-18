@@ -5,12 +5,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_blob_triggers
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_blob_triggers
   - changeSet:
       id: drop-qrtz_calendars-table
@@ -18,12 +18,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_calendars
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_calendars
   - changeSet:
       id: drop-qrtz_cron_triggers-table
@@ -31,12 +31,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_cron_triggers
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_cron_triggers
   - changeSet:
       id: drop-qrtz_fired_triggers-table
@@ -44,12 +44,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_fired_triggers
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_fired_triggers
   - changeSet:
       id: drop-qrtz_job_details-table
@@ -57,12 +57,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_job_details
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_job_details
   - changeSet:
       id: drop-qrtz_locks-table
@@ -70,12 +70,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_locks
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_locks
   - changeSet:
       id: drop-qrtz_paused_trigger_grps-table
@@ -83,12 +83,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_paused_trigger_grps
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_paused_trigger_grps
   - changeSet:
       id: drop-qrtz_scheduler_state-table
@@ -96,12 +96,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_scheduler_state
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_scheduler_state
   - changeSet:
       id: drop-qrtz_simple_triggers-table
@@ -109,12 +109,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_simple_triggers
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_simple_triggers
   - changeSet:
       id: drop-qrtz_simprop_triggers-table
@@ -122,12 +122,12 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_simprop_triggers
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_simprop_triggers
   - changeSet:
       id: drop-qrtz_triggers-table
@@ -135,10 +135,10 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_triggers
       changes:
         - dropTable:
             cascadeConstraints: true
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: qrtz_triggers

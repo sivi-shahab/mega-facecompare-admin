@@ -13,7 +13,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Entity
 @Builder
-@Table(schema = "public")
+@Table
 // Think about Subject as a collection of Embeddings
 public class Subject {
 

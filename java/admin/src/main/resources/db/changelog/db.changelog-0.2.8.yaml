@@ -8,13 +8,13 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: img
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: embedding
       changes:
         - sql:
             sql: >-
-              DELETE FROM public.img i
-              WHERE NOT EXISTS (SELECT 1 FROM public.embedding e WHERE e.img_id = i.id)
+              DELETE FROM ${db-schema}.img i
+              WHERE NOT EXISTS (SELECT 1 FROM ${db-schema}.embedding e WHERE e.img_id = i.id)

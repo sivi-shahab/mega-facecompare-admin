@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "reset_password_token", schema = "public")
+@Table(name = "reset_password_token")
 @Getter
 @Setter
 @NoArgsConstructor

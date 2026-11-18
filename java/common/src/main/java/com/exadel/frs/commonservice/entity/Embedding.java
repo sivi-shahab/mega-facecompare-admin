@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(schema = "public")
+@Table
 @Builder
 @AllArgsConstructor
 @TypeDefs(@TypeDef(name = "double-array", typeClass = DoubleArrayType.class))

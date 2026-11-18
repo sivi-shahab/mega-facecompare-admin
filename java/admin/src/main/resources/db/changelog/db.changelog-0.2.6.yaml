@@ -5,11 +5,11 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: image
       changes:
         - dropTable:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: image
   - changeSet:
       id: drop-face-table
@@ -17,9 +17,9 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
         - tableExists:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: face
       changes:
         - dropTable:
-            schemaName: public
+            schemaName: ${db-schema}
             tableName: face

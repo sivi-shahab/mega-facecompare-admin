@@ -31,7 +31,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 @Entity
-@Table(schema = "public")
+@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
