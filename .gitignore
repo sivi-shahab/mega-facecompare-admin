@@ -21,3 +21,4 @@ build/
 
 # env produksi (berisi rahasia, jangan di-commit)
 .env.prod
+.env.dev
