@@ -48,7 +48,7 @@ Non-rahasia (ConfigMap `compreface-admin`, default juga di-bake di `Dockerfile`/
 
 | Variabel | Default | Catatan |
 |---|---|---|
-| `POSTGRES_URL` | `jdbc:postgresql://10.102.47.46:5432/da?currentSchema=dashboard,public` | JDBC URL |
+| `POSTGRES_URL` | `jdbc:postgresql://10.102.47.46:5432/compreface?currentSchema=dashboard,public` | JDBC URL |
 | `DB_SCHEMA` | `public` (k8s: `dashboard`) | schema tabel (Hibernate + Liquibase); harus sama dengan `currentSchema` di `POSTGRES_URL` |
 | `PYTHON_URL` | `http://compreface-core:3000` | URL core |
 | `SPRING_PROFILES_ACTIVE` | `dev` | profil upstream |
@@ -113,7 +113,7 @@ Nama Service, port dan nama env var **tidak berubah** dibanding monorepo — per
 dan harus dikoordinasikan lewat repo deploy.
 
 - **Dipanggil oleh**: `compreface-fe` (`/admin/**` → `compreface-admin:8080`).
-- **Memanggil**: PostgreSQL eksternal `10.102.47.46:5432` (JDBC, DB `da`, schema `dashboard`), `compreface-core:3000` (`PYTHON_URL`, status/plugin).
+- **Memanggil**: PostgreSQL eksternal `10.102.47.46:5432` (JDBC, DB `compreface`, schema `dashboard`), `compreface-core:3000` (`PYTHON_URL`, status/plugin).
 - **Skema DB**: admin pemilik migrasi Liquibase (`java/admin/src/main/resources/db/changelog`). api memakai skema yang sama → rilis yang mengubah skema harus men-deploy admin lebih dulu.
 - Secret `compreface-postgres-credentials` dipakai bersama dengan api & db; `compreface-admin-secrets` khusus admin (contoh: [k8s/secret.example.yaml](k8s/secret.example.yaml)).
 
