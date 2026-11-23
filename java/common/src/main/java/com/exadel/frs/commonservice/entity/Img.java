@@ -11,7 +11,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @Entity
-@Table(schema = "public")
+@Table
 public class Img {
 
     @Id

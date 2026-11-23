@@ -27,7 +27,7 @@ import java.util.Optional;
 import static com.exadel.frs.commonservice.enums.AppRole.OWNER;
 
 @Entity
-@Table(schema = "public")
+@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

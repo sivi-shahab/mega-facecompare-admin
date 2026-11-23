@@ -46,7 +46,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        default_schema: public
+        default_schema: ${DB_SCHEMA:public}
         jdbc.lob.non_contextual_creation: true # fix for Caused by: java.sql.SQLFeatureNotSupportedException: Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented.
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
@@ -56,7 +56,9 @@ spring:
     open-in-view: true
     generate-ddl: false
   liquibase:
+    default-schema: ${DB_SCHEMA:public}
     parameters:
+      db-schema: ${DB_SCHEMA:public}
       common-client:
         client-id: ${app.security.oauth2.clients.COMMON.client-id}
         access-token-validity: ${app.security.oauth2.clients.COMMON.access-token-validity}

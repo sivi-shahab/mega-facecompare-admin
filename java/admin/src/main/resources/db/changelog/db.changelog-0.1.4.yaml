@@ -13,7 +13,7 @@ databaseChangeLog:
 
         # set type of previously existed models
         - sql:
-            sql: UPDATE  public.model  SET  type  = 'R'
+            sql: UPDATE  ${db-schema}.model  SET  type  = 'R'
 
         # add not null constraint
         - addNotNullConstraint:

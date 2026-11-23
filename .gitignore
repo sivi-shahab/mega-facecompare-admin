@@ -18,3 +18,7 @@ build/
 ### Build output & local env (lihat .env.example) ###
 /build/
 .env
+
+# env produksi (berisi rahasia, jangan di-commit)
+.env.prod
+.env.dev
